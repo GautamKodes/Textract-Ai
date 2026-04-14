@@ -731,29 +731,34 @@
             loading.classList.add('active');
             resultsSection.classList.remove('active');
 
-            // Simulate API call - replace with your actual backend endpoint
-            // For demo purposes, we'll simulate a delay and return sample text
-            await new Promise(resolve => setTimeout(resolve, 2000));
+            try {
+                const formData = new FormData();
+                formData.append('file', selectedFile);
 
-            // Sample extracted text (replace with actual API response)
-            const extractedText = `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                const response = await fetch('/api/extract', {
+                    method: 'POST',
+                    body: formData,
+                });
 
-Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                if (!response.ok) {
+                    throw new Error('Failed to extract text');
+                }
 
-Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+                const data = await response.json();
+                resultsText.textContent = data.text || 'No text found in image.';
+                loading.classList.remove('active');
+                resultsSection.classList.add('active');
 
-Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-
-Contact: support@texTRACT.ai | Website: www.texTRACT.ai`;
-
-            resultsText.textContent = extractedText;
-            loading.classList.remove('active');
-            resultsSection.classList.add('active');
-            processBtn.disabled = false;
-            processBtn.textContent = 'Extract Text';
-
-            // Scroll to results
-            resultsSection.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                // Scroll to results
+                resultsSection.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Failed to process image. Please try again.');
+                loading.classList.remove('active');
+            } finally {
+                processBtn.disabled = false;
+                processBtn.textContent = 'Extract Text';
+            }
         });
 
         // Copy button click

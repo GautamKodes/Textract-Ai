@@ -1,0 +1,22 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(.env/bin/pip *)",
+      "Bash(.env/bin/python *)",
+      "Bash(sleep *)",
+      "Bash(curl *)",
+      "Bash(kill *)",
+      "Bash(cd *)",
+      "Bash(head *)",
+      "Bash(echo *)",
+      "Bash(pkill *)",
+      "Bash(lsof *)",
+      "Bash(xargs *)",
+      "Bash(fuser *)",
+      "Bash(tee *)",
+      "Bash(nohup *)",
+      "Bash(python3 *)"
+    ]
+  },
+  "$version": 3
+}
